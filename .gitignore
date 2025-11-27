@@ -1,0 +1,80 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+venv_mac/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.spyderproject
+.spyproject
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data files (user should add their own)
+data/documents/*.docx
+data/documents/*.txt
+data/json/*.json
+
+# Output directories
+self_training_output/
+evaluation_output/
+comparison_output/
+output_json*/
+plots/
+
+# Logs
+*.log
+pipeline.log
+
+# Environment variables
+.env
+
+# Model checkpoints (large files)
+*.pt
+*.pth
+*.bin
+models/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+nul
+
+# Cache
+.cache/
+transformers_cache/
+huggingface/

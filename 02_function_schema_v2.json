@@ -1,0 +1,217 @@
+{
+  "name": "extract_bridge_data_v2",
+  "description": "Extracts structured bridge design data aligned to steel_girder_bridge5.json (English keys and nesting). All numeric fields must be numbers-as-strings without units; use null if missing.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "bridge_type": {
+        "type": "string",
+        "description": "e.g., Steel Girder, Plate Girder"
+      },
+      "geometry": {
+        "type": "object",
+        "properties": {
+          "girders": {
+            "type": "object",
+            "description": "Main girder (主桁) dimensions",
+            "properties": {
+              "spacing_x": {
+                "type": "string",
+                "description": "Transverse spacing between adjacent girders in mm. From 横断間隔長 table, use ONLY the 'G-1～G-2' column value (e.g., 2979 or 6700). NOT the sum/合計 column."
+              },
+              "spacing_z": {
+                "type": "string",
+                "description": "Longitudinal spacing between panel points in mm. From 主桁格間長 table"
+              },
+              "length": {
+                "type": "string",
+                "description": "Girder span length in mm. From 主桁支間長 table (e.g., 35000)"
+              },
+              "num_girders": {
+                "type": "integer",
+                "description": "Number of main girders. Count G-1, G-2, etc. labels"
+              },
+              "top_flange_width": {
+                "type": "string",
+                "description": "Upper flange width in mm. From 'UFLG PL 680 * 31', width is 680"
+              },
+              "web_height": {
+                "type": "string",
+                "description": "Web plate height in mm. From 主桁腹板高 table or 'WEB PL 2700 * 15', height is 2700"
+              },
+              "bottom_flange_width": {
+                "type": "string",
+                "description": "Lower flange width in mm. From 'LFLG PL 680 * 31', width is 680"
+              },
+              "top_flange_thickness": {
+                "type": "string",
+                "description": "Upper flange thickness in mm. From 'UFLG PL 680 * 31', thickness is 31"
+              },
+              "web_thickness": {
+                "type": "string",
+                "description": "Web plate thickness in mm. From 'WEB PL 2700 * 15', thickness is 15"
+              },
+              "bottom_flange_thickness": {
+                "type": "string",
+                "description": "Lower flange thickness in mm. From 'LFLG PL 680 * 31', thickness is 31"
+              },
+              "x_offset": {
+                "type": "string",
+                "description": "X coordinate offset of first girder in mm. From 主桁格点座標 table, first X座標 value (e.g., 600)"
+              }
+            },
+            "required": [
+              "length",
+              "num_girders"
+            ]
+          },
+          "deck": {
+            "type": "object",
+            "description": "Bridge deck (床版) dimensions",
+            "properties": {
+              "length": {
+                "type": "string",
+                "description": "Deck length in mm, usually same as girder span length"
+              },
+              "width": {
+                "type": "string",
+                "description": "Total deck width in mm. Use the '合計' (total) column value from 横断間隔長 table (e.g., 4256 or 11300)"
+              },
+              "thickness": {
+                "type": "string",
+                "description": "Deck slab thickness in mm. From '床版' or '床版厚' (e.g., 350)"
+              }
+            },
+            "required": [
+              "thickness"
+            ]
+          }
+        },
+        "required": [
+          "girders",
+          "deck"
+        ]
+      },
+      "material_properties": {
+        "type": "object",
+        "properties": {
+          "concrete": {
+            "type": "object",
+            "properties": {
+              "density": {
+                "type": "string",
+                "description": "N/m^3 (e.g., 24500)"
+              },
+              "young_modulus": {
+                "type": "string",
+                "default": "25000"
+              },
+              "poisson_ratio": {
+                "type": "string",
+                "default": "0.2"
+              }
+            }
+          },
+          "steel": {
+            "type": "object",
+            "properties": {
+              "density": {
+                "type": "string",
+                "default": "7700"
+              },
+              "young_modulus": {
+                "type": "string",
+                "default": "200000"
+              },
+              "poisson_ratio": {
+                "type": "string",
+                "default": "0.3"
+              }
+            }
+          }
+        }
+      },
+      "rebar": {
+        "type": "object",
+        "properties": {
+          "use_rebar": {
+            "type": "boolean"
+          },
+          "rebar_spacing": {
+            "type": "string"
+          },
+          "rebar_diameter": {
+            "type": "string"
+          }
+        }
+      },
+      "live_load": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "p1_bending": {
+            "type": "string"
+          },
+          "p1_shear": {
+            "type": "string"
+          },
+          "p2": {
+            "type": "string"
+          },
+          "impact_coefficient": {
+            "type": "string"
+          }
+        }
+      },
+      "crossbeams": {
+        "type": "object",
+        "description": "Crossbeam (横桁) dimensions from §５．横桁の設計 section ONLY - NOT from 対傾構 or 横構 sections",
+        "properties": {
+          "use_crossbeams": {
+            "type": "boolean",
+            "description": "true if crossbeams (横桁/中間横桁) are used"
+          },
+          "thickness": {
+            "type": "string",
+            "description": "Crossbeam WEB thickness in mm. From '横桁の設計→断面の決定' section: 'WEB PL 1250 * 9' means thickness=9. Or from H-beam 'H 700*300*13*24' = 13"
+          },
+          "length": {
+            "type": "string",
+            "description": "Crossbeam span length in mm. From '固定点間距離 L' in 横桁の設計 section, or G-1～G-2 value from 横断間隔長 table"
+          },
+          "height": {
+            "type": "string",
+            "description": "Crossbeam WEB height in mm. From '横桁の設計→断面の決定': 'WEB PL 1250 * 9' means height=1250. Or from H-beam 'H 700*300*13*24' = 700. NOT main girder height!"
+          },
+          "mesh_size": {
+            "type": "string"
+          },
+          "spacing_z": {
+            "type": "string",
+            "description": "Spacing between crossbeams along bridge length in mm. From 主桁格間長 table, e.g., 8700 or 8800"
+          },
+          "initial_position_y": {
+            "type": "string"
+          },
+          "initial_position_z": {
+            "type": "string"
+          },
+          "num_cross_girders": {
+            "type": "string",
+            "description": "Number of crossbeam locations. Count rows in 格点座標 or 横断 tables, typically 5 for a simple span"
+          }
+        },
+        "required": [
+          "use_crossbeams"
+        ]
+      }
+    },
+    "required": [
+      "bridge_type",
+      "geometry",
+      "crossbeams"
+    ]
+  }
+}
