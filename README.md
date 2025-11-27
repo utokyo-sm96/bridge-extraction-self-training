@@ -192,7 +192,7 @@ If you use this framework in your research, please cite:
 ```bibtex
 @software{bridge_extraction_self_training,
   title={Self-Training Framework for Bridge Design Information Extraction},
-  author={Your Name},
+  author={Shreejan Maharjan},
   year={2024},
   url={https://github.com/yourusername/bridge-extraction-self-training}
 }
@@ -201,3 +201,4 @@ If you use this framework in your research, please cite:
 ## License
 
 MIT License - see LICENSE file for details.
+
